@@ -1,10 +1,10 @@
+require('node:dns').setServers(['1.1.1.1'], ['8.8.8.8'])
 const express = require("express");
 const app = express();
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const todoController = require('./controllers/todoController');
 
 app.use(express())
-
-
 
 mongoose
   .connect(
@@ -13,6 +13,8 @@ mongoose
   .then(() => {
     console.log("DataBase Connected");
   });
+
+  app.post('create/todo', todoController)
 
 
 app.listen(5000, ()=>{
