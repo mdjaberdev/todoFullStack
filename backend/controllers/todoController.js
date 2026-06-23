@@ -1,8 +1,9 @@
 const Todo = require("../models/userModel");
 const todoController = (req, res) => {
   const { task, status, priority } = req.body;
+  console.log(task);
 
-  if (!task || !status) {
+  if (!task || !priority) {
     return res.send({
       success: false,
       message: "Please fill the all fields",
@@ -15,6 +16,23 @@ const todoController = (req, res) => {
     res.send({
       success: true,
       message: "Task add",
+    });
+    if (!task || !priority) {
+      return res.send({
+        success: false,
+        message: "Please fill all the field",
+      });
+    }
+
+    const todo = new Todo({
+      task: task,
+      priority: priority,
+    });
+
+    todo.save();
+    res.send({
+      success: true,
+      message: "Todo created",
     });
   }
 };

@@ -15,7 +15,7 @@ const userSchema = new Schema({
   priority: {
     type: String,
     enum: ["low", "medium", "high"],
-    required: true
+    required: true,
   },
 });
 
