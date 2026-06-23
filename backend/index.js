@@ -4,7 +4,7 @@ const app = express();
 const mongoose = require('mongoose');
 const todoController = require('./controllers/todoController');
 
-app.use(express())
+app.use(express.json())
 
 mongoose
   .connect(
@@ -14,7 +14,7 @@ mongoose
     console.log("DataBase Connected");
   });
 
-  app.post('create/todo', todoController)
+  app.post('/create/todo', todoController)
 
 
 app.listen(5000, ()=>{
