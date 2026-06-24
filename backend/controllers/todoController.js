@@ -13,7 +13,7 @@ const todoController = async (req, res) => {
     task: task,
     priority: priority,
   });
-  await  newTodo.save();
+
   res.send({
     success: true,
     message: "Task  add",
