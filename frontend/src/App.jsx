@@ -17,7 +17,7 @@ function App() {
 
     let allData = await axios.get("http://localhost:5000/allTodosGet");
     setData(allData.data.data);
-    task = ""
+    task = "";
   };
   const handleInputChange = (e) => {
     setTask(e.target.value);

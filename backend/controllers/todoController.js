@@ -28,4 +28,14 @@ const allTodosGetController = async (req, res) => {
   });
 
 };
-module.exports = { todoController, allTodosGetController };
+
+const deleteTodosController = async (req, res)=>{
+  const {id} = req.params
+  const deleteTask = await Todo.findByIdAndDelete(id, req.body)
+}
+
+module.exports = {
+  todoController,
+  allTodosGetController,
+  deleteTodosController,
+};

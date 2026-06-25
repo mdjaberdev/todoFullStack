@@ -1,12 +1,16 @@
-require('node:dns').setServers(['1.1.1.1'], ['8.8.8.8'])
+require("node:dns").setServers(["1.1.1.1"], ["8.8.8.8"]);
 const express = require("express");
-var cors = require('cors');
+var cors = require("cors");
 const app = express();
-const mongoose = require('mongoose');
-const {todoController, allTodosGetController, } = require('./controllers/todoController');
+const mongoose = require("mongoose");
+const {
+  todoController,
+  allTodosGetController,
+  deleteTodosController,
+} = require("./controllers/todoController");
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
 mongoose
   .connect(
@@ -16,9 +20,10 @@ mongoose
     console.log("DataBase Connected");
   });
 
-  app.post('/todo', todoController)
-   app.get('/allTodosGet', allTodosGetController)
+app.post("/todo", todoController);
+app.get("/allTodosGet", allTodosGetController);
+app.delete('/deleteTodos/:id', deleteTodosController)
 
-app.listen(5000, ()=>{
-    console.log('Server is Running 5000 port');
-})
+app.listen(5000, () => {
+  console.log("Server is Running 5000 port");
+});
