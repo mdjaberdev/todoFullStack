@@ -10,8 +10,7 @@ const userSchema = new Schema({
   status: {
     type: String,
     enum: ["pending", "active", "block"],
-    // default: "pending",
-    default: "pending",
+    required: true,
   },
   priority: {
     type: String,

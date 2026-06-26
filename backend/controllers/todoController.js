@@ -1,7 +1,7 @@
 const Todo = require("../models/userModel");
 const todoController = async (req, res) => {
   const { task, status, priority } = req.body;
-  if (!task || !priority) {
+  if (!task || !priority || !status) {
     return res.send({
       success: false,
       message: "Please Fil the all fields",
@@ -11,8 +11,9 @@ const todoController = async (req, res) => {
   const newTodo = new Todo({
     task: task,
     priority: priority,
+    status: status
   });
-  newTodo.save();
+ await newTodo.save();
   res.send({
     success: true,
     message: "Task add",
@@ -31,11 +32,24 @@ const allTodosGetController = async (req, res) => {
 
 const deleteTodosController = async (req, res)=>{
   const {id} = req.params
-  const deleteTask = await Todo.findByIdAndDelete(id, req.body)
+  const deleteTask = await Todo.findByIdAndDelete(id)
+  res.send({
+    success: true,
+    message: 'Todos Deleted'
+  })
+}
+const updateTodosController = async (req, res)=>{
+  const {id} = req.params
+  const updateTask = await Todo.findByIdAndUpdate({_id:id}, req.body)
+  res.send({
+    success: true,
+    message: "Task Updated"
+  })
 }
 
 module.exports = {
   todoController,
   allTodosGetController,
   deleteTodosController,
+  updateTodosController,
 };

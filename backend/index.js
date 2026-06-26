@@ -7,6 +7,7 @@ const {
   todoController,
   allTodosGetController,
   deleteTodosController,
+  updateTodosController,
 } = require("./controllers/todoController");
 
 app.use(express.json());
@@ -23,6 +24,7 @@ mongoose
 app.post("/todo", todoController);
 app.get("/allTodosGet", allTodosGetController);
 app.delete('/deleteTodos/:id', deleteTodosController)
+app.post("/updateTask/:id", updateTodosController);
 
 app.listen(5000, () => {
   console.log("Server is Running 5000 port");
