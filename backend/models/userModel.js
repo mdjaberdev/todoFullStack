@@ -17,6 +17,10 @@ const userSchema = new Schema({
     enum: ["low", "medium", "high"],
     required: true,
   },
+  createdAt:{
+    type: Date,
+    default: Date.now
+  }
 });
 
 module.exports = mongoose.model("Todo", userSchema);

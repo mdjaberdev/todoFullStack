@@ -11,6 +11,7 @@ function App() {
   let [data, setData] = useState([]);
   let [isUpdate, setisUpdate] = useState(false);
   let [id, setId] = useState("");
+
   const handleClick = async () => {
     let data = await axios.post("http://localhost:5000/todo", {
       task: task,
@@ -25,6 +26,7 @@ function App() {
     setPriority("");
     setStatus("");
   };
+
   const handleInputChange = (e) => {
     setTask(e.target.value);
   };
@@ -51,6 +53,7 @@ function App() {
     let allData = await axios.get("http://localhost:5000/allTodosGet");
     setData(allData.data.data);
   };
+
   let handleEdit = (item) => {
     setTask(item.task);
     setPriority(item.priority);
@@ -58,6 +61,7 @@ function App() {
     setisUpdate(true);
     setId(item._id);
   };
+
   let handleUpdate = async () => {
     let updateData = await axios.post(
       `http://localhost:5000/updateTask/${id}`,
@@ -73,8 +77,9 @@ function App() {
     setData(allData.data.data);
     setTask("");
     setPriority("");
-    setstatus("");
+    setStatus("");
   };
+
   return (
     <>
       <div className="min-h-screen bg-slate-950 text-slate-100 flex items-center justify-center p-4 antialiased w-full">
@@ -145,12 +150,12 @@ function App() {
           {/* Todo List */}
           <ul className="space-y-3">
             {data.map((item) => (
-              <>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 bg-slate-800/50 border border-slate-800 hover:border-slate-700/80 rounded-xl gap-4 transition-all">
-                  <li
-                    key={item._id}
-                    className="list-none text-slate-200 font-medium break-all flex flex-col gap-1"
-                  >
+              <div
+                key={item._id}
+                className="flex flex-col p-4 bg-slate-800/50 border border-slate-800 hover:border-slate-700/80 rounded-xl gap-3 transition-all"
+              >
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <li className="list-none text-slate-200 font-medium break-all flex flex-col gap-1">
                     <span>{item.task}</span>
                     <span className="text-xs text-slate-400 font-normal">
                       Priority:{" "}
@@ -179,7 +184,18 @@ function App() {
                     </button>
                   </div>
                 </div>
-              </>
+
+                <div className="flex justify-end items-center border-t border-slate-800/40 pt-2 mt-1">
+                  <div className="flex items-center gap-1.5 text-[11px] text-green-500 font-medium">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span>
+                    <span>
+                      {item.createdAt
+                        ? new Date(item.createdAt).toLocaleString("en")
+                        : "N/A"}
+                    </span>
+                  </div>
+                </div>
+              </div>
             ))}
           </ul>
         </div>
