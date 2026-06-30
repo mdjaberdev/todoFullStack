@@ -1,60 +1,77 @@
-import { useState } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import "./App.css";
-import { useEffect } from "react";
+
+interface TodoItem {
+  _id: string;
+  task: string;
+  priority: string;
+  status: string;
+  createdAt: string;
+}
+interface InfoSate {
+  success?: boolean;
+  message?: string;
+}
 
 function App() {
-  let [task, setTask] = useState("");
-  let [priority, setPriority] = useState("");
-  let [status, setStatus] = useState("");
-  let [info, setInfo] = useState({});
-  let [data, setData] = useState([]);
-  let [isUpdate, setisUpdate] = useState(false);
-  let [id, setId] = useState("");
+  const [task, setTask] = useState<string>("");
+  const [priority, setPriority] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
+  const [info, setInfo] = useState<InfoSate>({});
+  const [data, setData] = useState<TodoItem[]>([]);
+  const [isUpdate, setisUpdate] = useState<boolean>(false);
+  const [id, setId] = useState<string>("");
 
   const handleClick = async () => {
-    let data = await axios.post("http://localhost:5000/todo", {
+    const data = await axios.post<InfoSate>("http://localhost:5000/todo", {
       task: task,
       priority: priority,
       status: status,
     });
     setInfo(data.data);
 
-    let allData = await axios.get("http://localhost:5000/allTodosGet");
+    const allData = await axios.get<{ data: TodoItem[] }>(
+      "http://localhost:5000/allTodosGet",
+    );
     setData(allData.data.data);
     setTask("");
     setPriority("");
     setStatus("");
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setTask(e.target.value);
   };
-  const handleOptionChange = (e) => {
+  const handleOptionChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setPriority(e.target.value);
   };
-  const handleStatusChange = (e) => {
+  const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
     setStatus(e.target.value);
   };
 
   useEffect(() => {
     async function allDatas() {
-      let allData = await axios.get("http://localhost:5000/allTodosGet");
+      const allData = await axios.get<{ data: TodoItem[] }>(
+        "http://localhost:5000/allTodosGet",
+      );
       setData(allData.data.data);
     }
     allDatas();
   }, []);
 
-  let handleDelete = async (id) => {
-    let deleteData = await axios.delete(
+  let handleDelete = async (id: string) => {
+    const deleteData = await axios.delete(
       `http://localhost:5000/deleteTodos/${id}`,
     );
     console.log(deleteData);
-    let allData = await axios.get("http://localhost:5000/allTodosGet");
+    const allData = await axios.get<{ data: TodoItem[] }>(
+      "http://localhost:5000/allTodosGet",
+    );
     setData(allData.data.data);
   };
 
-  let handleEdit = (item) => {
+  const handleEdit = (item: TodoItem) => {
     setTask(item.task);
     setPriority(item.priority);
     setStatus(item.status);
@@ -62,8 +79,8 @@ function App() {
     setId(item._id);
   };
 
-  let handleUpdate = async () => {
-    let updateData = await axios.post(
+  const handleUpdate = async () => {
+    const updateData = await axios.post<{ data: TodoItem[] }>(
       `http://localhost:5000/updateTask/${id}`,
       {
         task: task,
@@ -73,8 +90,11 @@ function App() {
     );
     console.log(updateData);
 
-    let allData = await axios.get("http://localhost:5000/allTodosGet");
+    const allData = await axios.get<{ data: TodoItem[] }>(
+      "http://localhost:5000/allTodosGet",
+    );
     setData(allData.data.data);
+    setisUpdate(false);
     setTask("");
     setPriority("");
     setStatus("");
